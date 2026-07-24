@@ -8,16 +8,13 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
-            $table->id();
-            $table->string('badge_id', 50)->unique();
-            $table->string('kata_sandi');
-            $table->boolean('is_active')->default(true);
-            $table->enum('role', [
+        Schema::create('kategori_aset', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('nama', 100);
+            $table->enum('managed_role', [
                 'HRD',
-                'MIS',
                 'HOD',
-                'Karyawan'
+                'MIS'
             ]);
             $table->timestamps();
         });
@@ -25,6 +22,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('kategori_aset');
     }
 };
