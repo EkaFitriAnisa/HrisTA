@@ -21,21 +21,43 @@ class AuthController extends Controller
             'kata_sandi' => 'required|string',
         ]);
 
-        $attempt = Auth::attempt([
+        $user = \App\Models\User::where(
+            'badge_id',
+            $credentials['badge_id']
+        )->first();
+
+        if (! $user) {
+            return back()
+                ->withErrors([
+                    'badge_id' => 'Badge ID atau password salah.',
+                ])
+                ->onlyInput('badge_id');
+        }
+
+        if (! $user->is_active) {
+            return back()
+                ->withErrors([
+                    'badge_id' => 'Akun Anda telah dinonaktifkan. Silakan hubungi HRD untuk informasi lebih lanjut.',
+                ])
+                ->onlyInput('badge_id');
+        }
+
+        if (! Auth::attempt([
             'badge_id'  => $credentials['badge_id'],
             'password'  => $credentials['kata_sandi'],
-            'is_active' => true,
-        ]);
-
-        if (! $attempt) {
+        ])) {
             return back()
-                ->withErrors(['badge_id' => 'Badge ID atau password salah, atau akun tidak aktif.'])
+                ->withErrors([
+                    'badge_id' => 'Badge ID atau password salah.',
+                ])
                 ->onlyInput('badge_id');
         }
 
         $request->session()->regenerate();
 
-        return $this->redirectByRole(Auth::user()->role);
+        return $this->redirectByRole(
+            Auth::user()->role
+        );
     }
 
     public function logout(Request $request): RedirectResponse

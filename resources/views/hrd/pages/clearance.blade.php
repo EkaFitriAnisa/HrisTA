@@ -160,7 +160,9 @@
                                     fn($ca) => $ca->aset?->kategori?->managed_role === $currentRole &&
                                         $ca->status_pengembalian === 'pending',
                                 );
+
                                 $allAssetsReturned = $cl->clearanceAset->isNotEmpty()
+                                && $cl->clearanceAset->every(fn ($ca) => $ca->status_pengembalian === 'returned');
                             @endphp
 
                             <tr class="hover:bg-gray-50/50 transition-colors align-top">
@@ -310,7 +312,6 @@
                                             Detail
                                         </button>
                                     @endif
-
                                 </td>
                             </tr>
 

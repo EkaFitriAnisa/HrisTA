@@ -69,7 +69,6 @@ class ClearanceController extends Controller
 
             $this->syncApproval($clearance, $user);
             $this->syncClearanceStatus($clearance);
-            $this->finalizer->finalize($clearance);
         });
 
         return back()->with('success', 'Aset berhasil di-approve.');
@@ -95,9 +94,6 @@ class ClearanceController extends Controller
 
         return back()->with('success', 'Aset berhasil direvisi.');
     }
-
-    // ─── Helpers ────────────────────────────────────────────────────────────────
-
     private function loadClearance(ClearanceAset $clearanceAset): Clearance
     {
         return $clearanceAset->clearance()

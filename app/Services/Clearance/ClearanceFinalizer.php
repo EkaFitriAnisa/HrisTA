@@ -9,37 +9,48 @@ class ClearanceFinalizer
 {
     public function finalize(Clearance $clearance): void
     {
-        $clearance->loadMissing('karyawan', 'clearanceAset', 'approvals');
-
-        // Hanya jalan kalau status final sudah approved
         if ($clearance->status !== 'approved') {
             return;
         }
 
-        // Kembalikan semua aset aktif
+        $clearance->loadMissing([
+            'karyawan.user',
+            'clearanceAset',
+        ]);
+
         AssignAset::where('karyawan_id', $clearance->karyawan_id)
             ->where('status', 'aktif')
             ->update([
                 'status' => 'dikembalikan',
             ]);
 
-        // Selaraskan clearance aset
         $clearance->clearanceAset()->update([
             'status_pengembalian' => 'returned',
         ]);
 
-        // Finalisasi data karyawan
-        if ($clearance->jenis === 'mutasi_internal') {
-            $clearance->karyawan->update([
-                'depart_id' => $clearance->depart_tujuan_id,
-            ]);
-        }
+        match ($clearance->jenis) {
+            'mutasi_internal' => $this->handleInternalTransfer($clearance),
+            'resign' => $this->handleResignation($clearance),
+            default => null,
+        };
+    }
 
-        if ($clearance->jenis === 'resign') {
-            $clearance->karyawan->update([
-                'active' => 0,
-                'tanggal_selesai' => $clearance->tanggal_efektif,
-            ]);
-        }
+    private function handleInternalTransfer(Clearance $clearance): void
+    {
+        $clearance->karyawan->update([
+            'depart_id' => $clearance->depart_tujuan_id,
+        ]);
+    }
+
+    private function handleResignation(Clearance $clearance): void
+    {
+        $clearance->karyawan->update([
+            'active' => false,
+            'tanggal_selesai' => $clearance->tanggal_efektif,
+        ]);
+
+        $clearance->karyawan->user?->update([
+            'is_active' => false,
+        ]);
     }
 }

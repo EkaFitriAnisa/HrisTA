@@ -1,66 +1,411 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Employee Clearance System
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Sistem Employee Clearance merupakan aplikasi berbasis web yang digunakan untuk membantu proses clearance karyawan secara terstruktur dan terintegrasi. Sistem ini menggantikan proses clearance manual yang sebelumnya dilakukan menggunakan dokumen fisik dan proses persetujuan secara terpisah.
 
-## About Laravel
+Sistem ini memungkinkan karyawan mengajukan proses clearance dengan dua jenis pengajuan, yaitu **Resign** dan **Mutasi Internal**. Seluruh proses clearance dilakukan melalui tahapan pengajuan, pengembalian aset, approval berdasarkan pengelola aset, hingga proses finalisasi oleh HRD.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Fitur Utama
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+* Pengajuan clearance oleh karyawan
+* Pemilihan jenis clearance:
+    * Resign
+    * Mutasi Internal
+* Pengajuan dan verifikasi bukti pengembalian aset
+* Approval clearance berdasarkan aset yang dimiliki karyawan
+* Approval clearance secara berjenjang berdasarkan role pengelola aset
+* Finalisasi clearance oleh HRD
+* Penonaktifan akun secara otomatis setelah clearance resign selesai
+* Perubahan departemen secara otomatis setelah clearance mutasi internal selesai
 
-## Learning Laravel
+Sedangkan bagian seperti:
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+* Pengelolaan data karyawan
+* Pengelolaan data aset dan kategori aset
+* Pengelolaan assignment aset kepada karyawan
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+tidak dimasukkan sebagai fitur utama, karena sistem tidak berfokus pada pengelolaan tersebut. Data-data itu hanya digunakan sebagai data pendukung dalam proses clearance.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-## Laravel Sponsors
+## Role Pengguna
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+Sistem memiliki beberapa role pengguna dengan tanggung jawab yang berbeda.
 
-### Premium Partners
+### Karyawan
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+Karyawan dapat:
 
-## Contributing
+* Mengajukan clearance
+* Memilih jenis clearance:
+  * Resign
+  * Mutasi Internal
+* Mengisi informasi yang diperlukan dalam proses clearance
+* Mengunggah atau memberikan bukti pengembalian aset
+* Melihat status proses clearance
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### HOD
 
-## Code of Conduct
+HOD berperan sebagai pengelola atau pemegang aset fisik.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+HOD dapat:
 
-## Security Vulnerabilities
+* Memeriksa pengembalian aset fisik
+* Menyetujui pengembalian aset
+* Mengajukan revisi jika aset belum dikembalikan atau terdapat masalah
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### MIS
 
-## License
+MIS berperan sebagai pengelola aset kredensial dan akses sistem.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+MIS dapat:
+
+* Memeriksa pengembalian atau penutupan akses
+* Menyetujui aset kredensial
+* Mengajukan revisi jika masih terdapat akses yang belum diselesaikan
+
+### HRD
+
+HRD berperan sebagai pengelola aset fasilitas dan pihak yang melakukan finalisasi proses clearance.
+
+HRD dapat:
+
+* Memeriksa aset fasilitas karyawan
+* Menyetujui pengembalian aset fasilitas
+* Mengajukan revisi jika diperlukan
+* Melakukan finalisasi clearance
+* Menyelesaikan proses clearance karyawan
+
+---
+
+## Alur Proses Clearance
+
+### 1. Karyawan Mengajukan Clearance
+
+Proses dimulai ketika karyawan mengajukan clearance melalui sistem.
+
+Karyawan dapat memilih salah satu dari dua jenis clearance:
+
+* **Resign**
+* **Mutasi Internal**
+
+Untuk pengajuan **Mutasi Internal**, karyawan juga menentukan departemen tujuan.
+
+---
+
+### 2. Karyawan Menyelesaikan Kebutuhan Clearance
+
+Setelah pengajuan dibuat, karyawan perlu menyelesaikan seluruh kebutuhan clearance yang berkaitan dengan aset yang dimilikinya.
+
+Contoh kebutuhan clearance meliputi:
+
+* Pengembalian aset fisik
+* Penonaktifan atau pengembalian akses kredensial
+* Pengembalian fasilitas perusahaan
+* Pengunggahan bukti pengembalian apabila diperlukan
+
+Setiap aset yang dimiliki oleh karyawan akan menjadi bagian dari proses clearance.
+
+---
+
+### 3. Approval Berdasarkan Aset yang Dimiliki
+
+Proses approval dilakukan berdasarkan jenis aset yang dimiliki oleh karyawan.
+Sistem akan menentukan role yang perlu melakukan approval berdasarkan pengelola kategori aset.
+
+Contoh:
+Karyawan memiliki:
+- Aset Kredensial
+- Aset Fasilitas
+
+Maka proses approval:
+MIS
+↓
+HRD
+
+Karena:
+* Aset Kredensial dikelola oleh MIS
+* Aset Fasilitas dikelola oleh HRD
+
+Dalam kondisi ini, HOD tidak perlu melakukan approval karena karyawan tidak memiliki aset fisik yang dikelola oleh HOD.
+
+---
+
+## Urutan Approval Clearance
+
+Urutan approval ditentukan berdasarkan aset yang dimiliki oleh karyawan.
+
+### Approval Lengkap
+
+Jika karyawan memiliki seluruh jenis aset:
+
+HOD
+↓
+MIS
+↓
+HRD
+↓
+Finalisasi
+
+Urutan approval:
+1. HOD menyetujui aset fisik
+2. MIS menyetujui aset kredensial
+3. HRD menyetujui aset fasilitas
+4. HRD melakukan finalisasi clearance
+
+### Hanya Memiliki Aset Fisik
+
+HOD
+↓
+HRD
+↓
+Finalisasi
+
+---
+
+### Hanya Memiliki Aset Kredensial
+
+MIS
+↓
+HRD
+↓
+Finalisasi
+
+---
+
+### Hanya Memiliki Aset Fasilitas
+
+HRD
+↓
+Finalisasi
+
+Dengan sistem ini, proses approval tidak selalu harus melewati seluruh role. Approval hanya dilakukan oleh role yang memiliki tanggung jawab terhadap aset yang dimiliki oleh karyawan.
+
+---
+
+## Finalisasi Clearance
+
+Setelah seluruh aset berhasil disetujui oleh role yang bertanggung jawab, proses akan diteruskan kepada HRD.
+
+HRD akan mendapatkan akses untuk melakukan **Finalisasi Clearance**.
+
+Ketika HRD melakukan finalisasi:
+
+Status Clearance
+Pending / Process
+        ↓
+Approved / Selesai
+
+Pada tahap ini, proses clearance dianggap telah selesai.
+
+---
+
+## Dampak Finalisasi Berdasarkan Jenis Clearance
+
+### Resign
+
+Jika jenis clearance adalah **Resign**, maka setelah HRD melakukan finalisasi:
+
+Clearance selesai
+        ↓
+Karyawan dinonaktifkan
+        ↓
+Akun user dinonaktifkan
+
+Data yang diperbarui:
+karyawan.active = false
+users.is_active = false
+
+Dengan demikian, karyawan tidak dapat melakukan login kembali ke dalam sistem.
+
+---
+
+### Mutasi Internal
+
+Jika jenis clearance adalah **Mutasi Internal**, maka setelah HRD melakukan finalisasi:
+
+Clearance selesai
+        ↓
+Departemen karyawan diperbarui
+        ↓
+Karyawan dipindahkan ke departemen tujuan
+
+Data departemen karyawan akan diubah berdasarkan departemen tujuan yang telah dipilih pada saat pengajuan clearance.
+
+depart_id
+    ↓
+depart_tujuan_id
+
+Akun karyawan tetap aktif karena karyawan masih bekerja di dalam perusahaan.
+
+---
+
+## Alur Sistem Secara Keseluruhan
+
+┌─────────────────────────┐
+│ Karyawan Mengajukan     │
+│ Clearance               │
+└────────────┬────────────┘
+             │
+             ▼
+┌─────────────────────────┐
+│ Pilih Jenis Clearance   │
+│                         │
+│ - Resign                │
+│ - Mutasi Internal       │
+└────────────┬────────────┘
+             │
+             ▼
+┌─────────────────────────┐
+│ Menyelesaikan seluruh   │
+│ kebutuhan clearance     │
+│ dan pengembalian aset   │
+└────────────┬────────────┘
+             │
+             ▼
+┌─────────────────────────┐
+│ Sistem menentukan role  │
+│ approval berdasarkan    │
+│ aset yang dimiliki      │
+└────────────┬────────────┘
+             │
+             ▼
+┌─────────────────────────┐
+│ Approval Berjenjang     │
+│                         │
+│ HOD → MIS → HRD         │
+│                         │
+│ Berdasarkan kebutuhan   │
+│ aset karyawan           │
+└────────────┬────────────┘
+             │
+             ▼
+┌─────────────────────────┐
+│ HRD Finalisasi          │
+│ Clearance               │
+└────────────┬────────────┘
+             │
+             ▼
+       ┌─────┴─────┐
+       │           │
+       ▼           ▼
+   RESIGN      MUTASI INTERNAL
+       │           │
+       ▼           ▼
+  Nonaktifkan   Ubah Departemen
+  Akun User     Karyawan
+
+---
+
+## Teknologi yang Digunakan
+
+* **Laravel**
+* **PHP**
+* **MySQL**
+* **Blade Template**
+* **Tailwind CSS**
+* **JavaScript**
+* **Laragon**
+* **Figma**
+
+---
+
+## Instalasi
+
+### 1. Clone Repository
+git clone <repository-url>
+
+Masuk ke direktori project:
+
+cd employee-clearance
+
+---
+
+### 2. Install Dependency
+Install dependency PHP:
+composer install
+
+Jika project menggunakan dependency frontend:
+npm install
+
+---
+
+### 3. Konfigurasi Environment
+Duplikat file `.env.example` menjadi `.env`:
+
+cp .env.example .env
+
+Kemudian sesuaikan konfigurasi database:
+
+DB_DATABASE=hris
+DB_USERNAME=root
+DB_PASSWORD=
+
+---
+
+### 4. Generate Application Key
+php artisan key:generate
+
+---
+
+### 5. Menjalankan Migration dan Seeder
+Untuk membuat database dari awal:
+php artisan migrate:fresh --seed
+
+Perintah tersebut akan:
+1. Menghapus tabel lama
+2. Menjalankan seluruh migration
+3. Mengisi data awal melalui `DatabaseSeeder`
+
+---
+
+### 6. Menjalankan Project
+php artisan serve
+
+Project dapat diakses melalui:
+http://127.0.0.1:8000
+
+---
+
+## Akun Demo
+Seluruh akun demo menggunakan password:
+123123
+
+Contoh akun:
+| Role     | Badge ID | Password |
+| -------- | -------- | -------- |
+| HRD      | HRD001   | 123123   |
+| MIS      | MIS001   | 123123   |
+| HOD      | HOD001   | 123123   |
+| Karyawan | KRY001   | 123123   |
+| Karyawan | KRY002   | 123123   |
+| Karyawan | KRY003   | 123123   |
+
+---
+
+## Status Clearance
+Secara umum, clearance memiliki beberapa status:
+
+| Status     | Deskripsi                                     |
+| ---------- | --------------------------------------------- |
+| `pending`  | Clearance belum diproses                      |
+| `process`  | Clearance sedang dalam proses approval        |
+| `revision` | Terdapat aset atau data yang perlu diperbaiki |
+| `approved` | Clearance telah disetujui dan difinalisasi    |
+
+Setelah proses finalisasi selesai, clearance dianggap telah selesai diproses.
+
+---
+
+## Tujuan Sistem
+Sistem Employee Clearance dikembangkan untuk:
+
+* Mengurangi penggunaan dokumen fisik dalam proses clearance
+* Mempercepat proses pengembalian dan verifikasi aset
+* Mengatur proses approval berdasarkan tanggung jawab pengelola aset
+* Meningkatkan transparansi status clearance
+* Mengurangi risiko aset atau akses yang belum dikembalikan
+* Mengotomatisasi proses setelah clearance selesai
+* Memastikan akun karyawan yang resign dapat dinonaktifkan secara otomatis
+* Memudahkan proses mutasi internal melalui perubahan departemen secara otomatis

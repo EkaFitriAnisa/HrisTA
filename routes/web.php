@@ -20,7 +20,7 @@ Route::prefix('hrd')->middleware('auth')->name('hrd.')->group(function () {
     Route::resource('clearance', HrdClearanceController::class)->only(['index'])->names('clearance');
     Route::post('/clearance/aset/{clearanceAset}/approve', [HrdClearanceController::class, 'approveAset'])->name('clearance.aset.approve');
     Route::post('/clearance/aset/{clearanceAset}/reject',  [HrdClearanceController::class, 'rejectAset'])->name('clearance.aset.reject');
-    Route::post('/clearance/{id}/finalize', [HrdClearanceController::class, 'finalize'])->name('clearance.finalize');
+    Route::post('/clearance/{clearance}/finalize', [HrdClearanceController::class, 'finalize'])->name('clearance.finalize');
     Route::get('riwayat', [RiwayatController::class, 'index'])->name('riwayat.index');
 });
 
