@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Login | HRIS Employee Clearances</title>
+    <title>Login | HRIS Employee Clearancess</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <script src="https://cdn.tailwindcss.com"></script>
