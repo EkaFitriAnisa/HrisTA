@@ -37,7 +37,7 @@
                 </h1>
 
                 <p class="text-gray-500 mt-2 text-center lg:text-left">
-                    Masuk ke sistem HRIS Employee Clearance
+                    Masuk ke sistem HRIS Employee Clearance Sekarang
                 </p>
 
                 {{-- FORM LOGIN --}}
